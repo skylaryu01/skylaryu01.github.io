@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麻雀砸蛋蛋趣味单</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f9f4ff 0%, #e6f7ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #ff6b9d;
+            font-size: 3.5rem;
+            text-shadow: 3px 3px 0 #ffd166;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1:after {
+            content: "🥚";
+            position: absolute;
+            right: -50px;
+            top: -5px;
+            font-size: 3rem;
+        }
+
+        h1:before {
+            content: "🥚";
+            position: absolute;
+            left: -50px;
+            top: -5px;
+            font-size: 3rem;
+        }
+
+        .subtitle {
+            color: #ff4757;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 0 #ffd166;
+        }
+
+        .prizes-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 5px dashed #ffd166;
+        }
+
+        .prizes-title {
+            text-align: center;
+            color: #ff6b9d;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .prize-item {
+            background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .prize-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .prize-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            width: 50px;
+            text-align: center;
+        }
+
+        .prize-text {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #5a3d5c;
+        }
+
+        .prize-level {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .eggs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .egg {
+            width: 150px;
+            height: 200px;
+            background: radial-gradient(ellipse at center, #ffd166 0%, #ff9e00 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 0 auto;
+        }
+
+        .egg:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .egg.cracked {
+            background: radial-gradient(ellipse at center, #ffd166 0%, #ff9e00 100%);
+            cursor: default;
+        }
+
+        .egg.cracked:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><path d="M40,100 Q75,30 110,100 M50,120 Q75,180 100,120" stroke="%235a3d5c" stroke-width="4" fill="none" stroke-linecap="round"/></svg>');
+            opacity: 0.7;
+        }
+
+        .egg-number {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 800px;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background-color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .stat-title {
+            font-size: 1.1rem;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6b9d;
+        }
+
+        .prizes-won {
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border: 5px solid #a29bfe;
+        }
+
+        .prizes-won h3 {
+            color: #6c5ce7;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #prizes-list {
+            min-height: 120px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .won-prize {
+            background: linear-gradient(to right, #a29bfe 0%, #74b9ff 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .won-prize i {
+            margin-right: 8px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(to bottom right, #ffd166, #ff9e00);
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.5s;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            color: #ff4757;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #fff;
+        }
+
+        .modal-prize {
+            font-size: 2.2rem;
+            color: #5a3d5c;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-close:hover {
+            background-color: #ff6b81;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .reset-btn {
+            background: linear-gradient(to right, #ff6b9d, #ff4757);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 900px) {
+            .eggs-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            
+            .egg {
+                width: 120px;
+                height: 160px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .eggs-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .egg {
+                width: 90px;
+                height: 130px;
+            }
+            
+            .prizes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h1:before, h1:after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>麻雀砸蛋蛋趣味单</h1>
+            <div class="subtitle">大红福气全都来！</div>
+        </header>
+
+        <div class="prizes-container">
+            <div class="prizes-title">🎁 奖品展示 🎁</div>
+            <div class="prizes-grid">
+                <div class="prize-item">
+                    <div class="prize-icon">🏆</div>
+                    <div class="prize-text"><span class="prize-level">一等奖：</span>四个大红</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">🥇</div>
+                    <div class="prize-text"><span class="prize-level">二等奖：</span>两个工艺类红</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">🥈</div>
+                    <div class="prize-text"><span class="prize-level">三等奖：</span>单局必须1000w撤离</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">🥉</div>
+                    <div class="prize-text"><span class="prize-level">四等奖：</span>保底1088w</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">⭐</div>
+                    <div class="prize-text"><span class="prize-level">五等奖：</span>保底888w</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">🎯</div>
+                    <div class="prize-text"><span class="prize-level">六等奖：</span>保底688w</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-icon">💎</div>
+                    <div class="prize-text"><span class="prize-level">七等奖(3个)：</span>保底488w</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-title">已砸金蛋</div>
+                    <div class="stat-value" id="eggs-broken">0/9</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">获得奖励</div>
+                    <div class="stat-value" id="prizes-count">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">剩余金蛋</div>
+                    <div class="stat-value" id="eggs-left">9</div>
+                </div>
+            </div>
+
+            <div class="eggs-grid" id="eggs-container">
+                <!-- 金蛋将通过JS动态生成 -->
+            </div>
+
+            <button class="reset-btn" id="reset-btn">
+                <i class="fas fa-redo-alt"></i> 重新开始游戏
+            </button>
+        </div>
+
+        <div class="prizes-won">
+            <h3><i class="fas fa-gift"></i> 已获得奖品</h3>
+            <div id="prizes-list">
+                <div class="no-prizes">还没有砸中奖品，快去砸金蛋吧！</div>
+            </div>
+        </div>
+
+        <div class="modal" id="prize-modal">
+            <div class="modal-content">
+                <div class="modal-title">恭喜您！</div>
+                <div class="modal-prize" id="modal-prize-text"></div>
+                <button class="modal-close" id="modal-close">继续砸蛋</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>麻雀砸蛋蛋趣味单 | 祝您好运连连，福气满满！</p>
+        </footer>
+    </div>
+
+    <audio id="crack-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-egg-cracking-759.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="win-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 更新后的奖品数据
+        const prizes = [
+            { level: "一等奖", text: "四个大红", icon: "🏆", count: 1 },
+            { level: "二等奖", text: "两个工艺类红", icon: "🥇", count: 1 },
+            { level: "三等奖", text: "单局必须1000w撤离", icon: "🥈", count: 1 },
+            { level: "四等奖", text: "保底1088w", icon: "🥉", count: 1 },
+            { level: "五等奖", text: "保底888w", icon: "⭐", count: 1 },
+            { level: "六等奖", text: "保底688w", icon: "🎯", count: 1 },
+            { level: "七等奖", text: "保底488w", icon: "💎", count: 3 }
+        ];
+
+        // 游戏状态
+        let gameState = {
+            eggsBroken: 0,
+            prizesWon: [],
+            eggs: Array(9).fill(null).map((_, i) => ({ id: i, broken: false, prizeIndex: -1 })),
+            clickCount: 0,
+            gameOver: false
+        };
+
+        // 初始化游戏
+        function initGame() {
+            // 重置游戏状态
+            gameState = {
+                eggsBroken: 0,
+                prizesWon: [],
+                eggs: Array(9).fill(null).map((_, i) => ({ id: i, broken: false, prizeIndex: -1 })),
+                clickCount: 0,
+                gameOver: false
+            };
+
+            // 分配奖品到金蛋
+            assignPrizesToEggs();
+            
+            // 更新UI
+            updateStats();
+            renderEggs();
+            renderPrizesWon();
+            
+            // 隐藏弹窗
+            document.getElementById('prize-modal').style.display = 'none';
+            
+            // 重新启用所有金蛋
+            document.querySelectorAll('.egg').forEach(egg => {
+                egg.classList.remove('cracked');
+                egg.style.pointerEvents = 'auto';
+            });
+        }
+
+        // 分配奖品到金蛋
+        function assignPrizesToEggs() {
+            const prizeDistribution = [];
+            
+            // 根据奖品数量创建分配数组
+            prizes.forEach((prize, index) => {
+                for (let i = 0; i < prize.count; i++) {
+                    prizeDistribution.push(index);
+                }
+            });
+            
+            // 随机打乱分配数组
+            shuffleArray(prizeDistribution);
+            
+            // 分配给金蛋
+            gameState.eggs.forEach((egg, index) => {
+                egg.prizeIndex = prizeDistribution[index];
+            });
+        }
+
+        // 洗牌算法
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 砸金蛋
+        function crackEgg(eggId) {
+            if (gameState.gameOver || gameState.eggs[eggId].broken) return;
+            
+            const egg = gameState.eggs[eggId];
+            egg.broken = true;
+            gameState.eggsBroken++;
+            gameState.clickCount++;
+            
+            // 播放砸蛋音效
+            document.getElementById('crack-sound').currentTime = 0;
+            document.getElementById('crack-sound').play();
+            
+            // 更新UI
+            updateStats();
+            renderEggs();
+            
+            // 获取奖品
+            const prizeIndex = egg.prizeIndex;
+            const prize = prizes[prizeIndex];
+            
+            // 添加到已获得奖品
+            gameState.prizesWon.push({
+                level: prize.level,
+                text: prize.text,
+                icon: prize.icon
+            });
+            
+            // 更新已获得奖品列表
+            renderPrizesWon();
+            
+            // 播放获奖音效
+            setTimeout(() => {
+                document.getElementById('win-sound').currentTime = 0;
+                document.getElementById('win-sound').play();
+            }, 300);
+            
+            // 显示获奖弹窗
+            setTimeout(() => showPrizeModal(prize), 500);
+            
+            // 检查游戏是否结束
+            if (gameState.eggsBroken === 9) {
+                gameState.gameOver = true;
+                setTimeout(() => {
+                    alert('游戏结束！您已砸完所有金蛋！');
+                }, 1000);
+            }
+        }
+
+        // 显示奖品弹窗
+        function showPrizeModal(prize) {
+            const modal = document.getElementById('prize-modal');
+            const prizeText = document.getElementById('modal-prize-text');
+            
+            prizeText.innerHTML = `${prize.icon} ${prize.level}: ${prize.text}`;
+            modal.style.display = 'flex';
+            
+            // 创建彩带效果
+            createConfetti();
+            
+            // 3秒后自动关闭弹窗
+            setTimeout(() => {
+                if (modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                }
+            }, 3000);
+        }
+
+        // 创建彩带效果
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#ffd166', '#06d6a0', '#118ab2', '#ef476f'];
+            const container = document.querySelector('.modal-content');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.opacity = '1';
+                
+                container.appendChild(confetti);
+                
+                // 动画
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 30 + Math.random() * 30;
+                const gravity = 0.1;
+                
+                let x = 0;
+                let y = 0;
+                let vx = Math.cos(angle) * velocity;
+                let vy = Math.sin(angle) * velocity;
+                
+                const animate = () => {
+                    x += vx;
+                    y += vy;
+                    vy += gravity;
+                    
+                    confetti.style.transform = `translate(${x}px, ${y}px)`;
+                    
+                    if (y < 300) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.style.opacity = '0';
+                        setTimeout(() => {
+                            if (confetti.parentNode) {
+                                confetti.parentNode.removeChild(confetti);
+                            }
+                        }, 1000);
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('eggs-broken').textContent = `${gameState.eggsBroken}/9`;
+            document.getElementById('prizes-count').textContent = gameState.prizesWon.length;
+            document.getElementById('eggs-left').textContent = 9 - gameState.eggsBroken;
+        }
+
+        // 渲染金蛋
+        function renderEggs() {
+            const eggsContainer = document.getElementById('eggs-container');
+            eggsContainer.innerHTML = '';
+            
+            gameState.eggs.forEach((egg, index) => {
+                const eggElement = document.createElement('div');
+                eggElement.className = `egg ${egg.broken ? 'cracked' : ''}`;
+                eggElement.dataset.id = index;
+                
+                if (!egg.broken) {
+                    eggElement.onclick = () => crackEggWithProbability(index);
+                }
+                
+                const numberElement = document.createElement('div');
+                numberElement.className = 'egg-number';
+                numberElement.textContent = index + 1;
+                
+                eggElement.appendChild(numberElement);
+                eggsContainer.appendChild(eggElement);
+            });
+        }
+
+        // 带概率权重的砸蛋函数
+        function crackEggWithProbability(eggId) {
+            if (gameState.gameOver || gameState.eggs[eggId].broken) return;
+            
+            const egg = gameState.eggs[eggId];
+            
+            // 检查前三次砸蛋不可能中一等奖
+            if (gameState.clickCount < 3 && egg.prizeIndex === 0) {
+                // 如果是一等奖，重新分配一个非一等奖的奖品
+                let newPrizeIndex;
+                do {
+                    newPrizeIndex = getRandomPrizeIndexWithWeights();
+                } while (newPrizeIndex === 0); // 确保不是一等奖
+                
+                // 找到原来的一等奖奖品，放回未分配池
+                const originalPrizeIndex = egg.prizeIndex;
+                
+                // 分配新的奖品
+                egg.prizeIndex = newPrizeIndex;
+                
+                // 将原来的一等奖重新分配给其他未砸开的金蛋
+                redistributePrizeToOtherEgg(originalPrizeIndex, eggId);
+            }
+            
+            // 前四次降低一二三等奖的概率
+            if (gameState.clickCount < 4 && [0, 1, 2].includes(egg.prizeIndex)) {
+                const random = Math.random();
+                // 只有30%的概率保留一二三等奖，70%的概率换成其他奖品
+                if (random > 0.3) {
+                    const originalPrizeIndex = egg.prizeIndex;
+                    let newPrizeIndex;
+                    do {
+                        newPrizeIndex = getRandomPrizeIndexWithWeights();
+                    } while ([0, 1, 2].includes(newPrizeIndex)); // 确保不是一二三等奖
+                    
+                    egg.prizeIndex = newPrizeIndex;
+                    redistributePrizeToOtherEgg(originalPrizeIndex, eggId);
+                }
+            }
+            
+            // 执行砸蛋
+            crackEgg(eggId);
+        }
+
+        // 重新分配奖品到其他未砸开的金蛋
+        function redistributePrizeToOtherEgg(prizeIndex, excludeEggId) {
+            // 找到未砸开的金蛋
+            const availableEggs = gameState.eggs.filter(egg => 
+                !egg.broken && egg.id !== excludeEggId && egg.prizeIndex !== prizeIndex
+            );
+            
+            if (availableEggs.length > 0) {
+                // 随机选一个未砸开的金蛋
+                const randomEgg = availableEggs[Math.floor(Math.random() * availableEggs.length)];
+                
+                // 保存原来的奖品
+                const originalPrize = randomEgg.prizeIndex;
+                
+                // 分配新奖品
+                randomEgg.prizeIndex = prizeIndex;
+                
+                // 将原来的奖品放到排除的金蛋中（避免奖品丢失）
+                if (excludeEggId !== undefined) {
+                    gameState.eggs[excludeEggId].prizeIndex = originalPrize;
+                }
+            }
+        }
+
+        // 带权重的随机奖品索引获取
+        function getRandomPrizeIndexWithWeights() {
+            // 计算每个奖品的剩余数量
+            const remainingPrizes = prizes.map((prize, index) => {
+                const alreadyWon = gameState.prizesWon.filter(p => p.level === prize.level).length;
+                const remaining = prize.count - alreadyWon;
+                return { index, remaining };
+            }).filter(p => p.remaining > 0);
+            
+            if (remainingPrizes.length === 0) return 0;
+            
+            // 根据点击次数调整权重
+            let weights = [];
+            remainingPrizes.forEach(p => {
+                let weight = 1;
+                const prizeIndex = p.index;
+                
+                // 前四次降低一二三等奖的权重
+                if (gameState.clickCount < 4) {
+                    if (prizeIndex === 0) weight = 0.1; // 一等奖权重极低
+                    else if (prizeIndex === 1) weight = 0.3; // 二等奖权重低
+                    else if (prizeIndex === 2) weight = 0.5; // 三等奖权重较低
+                    else weight = 2; // 其他奖品权重高
+                } else {
+                    // 正常权重
+                    if (prizeIndex <= 2) weight = 1; // 一二三等奖正常权重
+                    else weight = 1.5; // 其他奖品稍高权重
+                }
+                
+                weights.push({ index: prizeIndex, weight });
+            });
+            
+            // 根据权重随机选择
+            const totalWeight = weights.reduce((sum, w) => sum + w.weight, 0);
+            let random = Math.random() * totalWeight;
+            
+            for (let i = 0; i < weights.length; i++) {
+                random -= weights[i].weight;
+                if (random <= 0) {
+                    return weights[i].index;
+                }
+            }
+            
+            return remainingPrizes[0].index;
+        }
+
+        // 渲染已获得奖品
+        function renderPrizesWon() {
+            const prizesList = document.getElementById('prizes-list');
+            
+            if (gameState.prizesWon.length === 0) {
+                prizesList.innerHTML = '<div class="no-prizes">还没有砸中奖品，快去砸金蛋吧！</div>';
+                return;
+            }
+            
+            prizesList.innerHTML = gameState.prizesWon.map(prize => 
+                `<div class="won-prize">${prize.icon} ${prize.level}: ${prize.text}</div>`
+            ).join('');
+        }
+
+        // 事件监听
+        document.getElementById('modal-close').addEventListener('click', () => {
+            document.getElementById('prize-modal').style.display = 'none';
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', initGame);
+
+        // 页面加载时初始化游戏
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
